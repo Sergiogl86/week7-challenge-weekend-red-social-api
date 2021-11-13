@@ -1,0 +1,38 @@
+{
+  "name": "week7-challenge-weekend-red-social-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start dev": "nodemon index -q",
+    "start": "node index",
+    "test": "jest --watchAll --collect-coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sergiogl86/week7-challenge-weekend-red-social-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sergiogl86/week7-challenge-weekend-red-social-api/issues"
+  },
+  "homepage": "https://github.com/Sergiogl86/week7-challenge-weekend-red-social-api#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validation": "^3.0.8",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0"
+  }
+}
