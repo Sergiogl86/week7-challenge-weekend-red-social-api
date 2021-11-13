@@ -46,7 +46,48 @@ const addUser = async (req, res, next) => {
   }
 };
 
+const loginUser = async (req, res, next) => {
+  const { username, password } = req.body;
+  debug(chalk.blue("Haciendo un post a /redSocial/login"));
+  debug(chalk.blue("loginUser"));
+  debug(chalk.blue(username));
+  debug(chalk.blue(password));
+  const user = await User.findOne({ username });
+  debug(chalk.blue(`El usuario encontrado es ${JSON.stringify(user)}`));
+  debug(chalk.blue(user));
+  if (!user) {
+    const error = new Error("Wrong credentials");
+    error.code = 401;
+    debug(chalk.blue(`El usuario no existe ${JSON.stringify(error)}`));
+    next(error);
+  } else {
+    const contraseñaOK = await bcrypt.compare(password, user.password);
+    debug(chalk.blue(contraseñaOK));
+    if (!contraseñaOK) {
+      const error = new Error("Wrong credentials");
+      error.code = 401;
+      next(error);
+    } else {
+      debug(chalk.blue("Seguimos para generar el Token!"));
+      debug(chalk.blue(`Codificando: ${user.id}`));
+      debug(chalk.blue(`Codificando: ${user.userName}`));
+      const token = jwt.sign(
+        {
+          id: user.id,
+          userName: user.userName,
+        },
+        process.env.RED_HASH,
+        {
+          expiresIn: 24 * 60 * 60,
+        }
+      );
+      res.json({ token });
+    }
+  }
+};
+
 module.exports = {
   getusers,
   addUser,
+  loginUser,
 };
