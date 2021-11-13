@@ -105,3 +105,6 @@ dist
 
 #Sonar Scanner
 .scannerwork
+
+#Firebase
+[firebase]*.json

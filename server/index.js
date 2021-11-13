@@ -1,7 +1,11 @@
 const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
 const chalk = require("chalk");
 const debug = require("debug")("redSsocial:indexServer");
-const morgan = require("morgan");
+
+const usersRoutes = require("./routes/usersRoutes");
+
 const {
   noEncontradoHandler,
   finalErrorHandler,
@@ -43,7 +47,11 @@ const initializeServer = (port) =>
 
 app.use(morgan("dev"));
 
+app.use(cors()); // <---- use cors middleware
+
 app.use(express.json());
+
+app.use("/redSocial", usersRoutes);
 
 app.use(noEncontradoHandler);
 app.use(finalErrorHandler);
