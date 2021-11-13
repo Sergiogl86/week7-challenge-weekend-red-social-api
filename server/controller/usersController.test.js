@@ -33,7 +33,7 @@ describe("Given a addUser function", () => {
       };
 
       const user = {
-        userName: "Usuario_Admin",
+        username: "Usuario_Admin",
         password:
           "$2b$10$.xShGXjq4bjeueI7/9/DquWq5AIJ0d.mBxYs/lmMnf9FFollI4pMC",
         id: "618c181075e76774517f1aa0",
@@ -78,7 +78,7 @@ describe("Given a addUser function", () => {
       };
 
       const user = {
-        userName: "Usuario_Admin",
+        username: "Usuario_Admin",
         password:
           "$2b$10$.xShGXjq4bjeueI7/9/DquWq5AIJ0d.mBxYs/lmMnf9FFollI4pMC",
         isAdmin: true,
@@ -100,6 +100,113 @@ describe("Given a addUser function", () => {
       User.create = jest.fn().mockRejectedValue({});
 
       await addUser(req, res, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
+});
+
+describe("Given a loginUser function", () => {
+  describe("When it receives existing user login", () => {
+    test("Then it should invoke res.json() function with a new token", async () => {
+      const req = {
+        body: {
+          username: "Sergio",
+          password: "entrar",
+        },
+      };
+
+      const user = {
+        username: "Usuario_Admin",
+        password:
+          "$2b$10$.xShGXjq4bjeueI7/9/DquWq5AIJ0d.mBxYs/lmMnf9FFollI4pMC",
+      };
+
+      const expectedToken = {
+        token: "Token_Bonito",
+      };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      const next = jest.fn();
+
+      User.findOne = jest.fn().mockResolvedValue(user);
+      bcrypt.compare = jest.fn().mockResolvedValue(true);
+      jwt.sign = jest.fn().mockReturnValue("Token_Bonito");
+
+      await loginUser(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith(expectedToken);
+    });
+  });
+  describe("When it receives non existing user login", () => {
+    test("Then it should invoke next() function with a error", async () => {
+      const req = {
+        body: {
+          username: "Sergio",
+          password: "entrar",
+        },
+      };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      const expectedError = {
+        message: "Wrong credentials",
+        code: 401,
+      };
+
+      const next = jest.fn();
+
+      User.findOne = jest.fn().mockResolvedValue(null);
+
+      await loginUser(req, res, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
+
+  describe("When it receives non correct user login password", () => {
+    test("Then it should invoke next() function with a error", async () => {
+      const req = {
+        body: {
+          username: "Sergio",
+          password: "erroneo",
+        },
+      };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      const user = {
+        username: "Usuario_Admin",
+        password:
+          "$2b$10$.xShGXjq4bjeueI7/9/DquWq5AIJ0d.mBxYs/lmMnf9FFollI4pMC",
+      };
+
+      const expectedError = {
+        message: "Wrong credentials",
+        code: 401,
+      };
+
+      const next = jest.fn();
+
+      User.findOne = jest.fn().mockResolvedValue(user);
+      bcrypt.compare = jest.fn().mockResolvedValue(false);
+
+      await loginUser(req, res, next);
 
       expect(next.mock.calls[0][0]).toHaveProperty(
         "message",

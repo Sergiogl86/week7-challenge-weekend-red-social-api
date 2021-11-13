@@ -2,10 +2,18 @@ const express = require("express");
 const { validate } = require("express-validation");
 const multer = require("multer");
 const path = require("path");
-const { getusers, addUser } = require("../controller/usersController");
+const Auth = require("../middlewares/auth");
+const {
+  getusers,
+  addUser,
+  loginUser,
+} = require("../controller/usersController");
 const firebase = require("../middlewares/firebase");
 
-const userValidation = require("../schemas/userSchema");
+const {
+  userValidation,
+  userLoginValidation,
+} = require("../schemas/userSchema");
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -27,7 +35,7 @@ const upload = multer({
 
 const router = express.Router();
 
-router.get("/all", getusers);
+router.get("/all", Auth, getusers);
 router.post(
   "/register",
   upload.single("img"),
@@ -35,6 +43,6 @@ router.post(
   validate(userValidation),
   addUser
 );
-/* router.post("/login", validate(userValidation), loginUser); */
+router.post("/login", validate(userLoginValidation), loginUser);
 
 module.exports = router;
