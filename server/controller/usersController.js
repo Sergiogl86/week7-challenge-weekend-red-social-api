@@ -70,11 +70,11 @@ const loginUser = async (req, res, next) => {
     } else {
       debug(chalk.blue("Seguimos para generar el Token!"));
       debug(chalk.blue(`Codificando: ${user.id}`));
-      debug(chalk.blue(`Codificando: ${user.userName}`));
+      debug(chalk.blue(`Codificando: ${user.username}`));
       const token = jwt.sign(
         {
           id: user.id,
-          userName: user.userName,
+          username: user.username,
         },
         process.env.RED_HASH,
         {
