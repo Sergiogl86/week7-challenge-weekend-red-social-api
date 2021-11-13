@@ -47,9 +47,9 @@ const initializeServer = (port) =>
 
 app.use(morgan("dev"));
 
-app.use(express.json());
-
 app.use(cors()); // <---- use cors middleware
+
+app.use(express.json());
 
 app.use("/redSocial", usersRoutes);
 
