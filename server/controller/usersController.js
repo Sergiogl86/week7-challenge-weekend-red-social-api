@@ -76,6 +76,41 @@ const addUser = async (req, res, next) => {
   }
 };
 
+const updateProfileUser = async (req, res, next) => {
+  const userBody = req.body;
+  debug(chalk.blue("Haciendo un put a redSocial/updateProfile"));
+  debug(chalk.blue("Nos llega en el body el user ->"));
+  debug(chalk.blue(JSON.stringify(userBody)));
+  debug(chalk.blue("Nos llega en req.file el file ->"));
+  debug(chalk.blue(JSON.stringify(req.file)));
+  userBody.image = req.file.fileURL;
+  userBody.imageLocal = req.file.path;
+  userBody.id = req.userid;
+  userBody.password = await bcrypt.hash(userBody.password, 10);
+  debug(chalk.blue("Modifico el body el user ->"));
+  debug(chalk.blue(JSON.stringify(userBody)));
+  try {
+    debug(
+      chalk.blue("Modificando usuario en el endpoint /redSocial/updateProfile")
+    );
+    const users = await User.findByIdAndUpdate(req.userid, userBody, {
+      select: "username name id image imageLocal bio age",
+      new: true,
+    });
+    debug(chalk.blue(`Hemos modificado el usuario ${users}`));
+    res.json(users);
+  } catch (problem) {
+    debug(chalk.blue("El detonante el catch es->"));
+    debug(chalk.blue(problem));
+    const error = new Error("Datos erroneos!");
+    error.code = 400;
+    debug(
+      chalk.blue(`Hemos creado el error de usuario ${JSON.stringify(error)}`)
+    );
+    next(error);
+  }
+};
+
 const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
   debug(chalk.blue("Haciendo un post a /redSocial/login"));
@@ -122,4 +157,5 @@ module.exports = {
   loginUser,
   getMembers,
   getUserProfile,
+  updateProfileUser,
 };

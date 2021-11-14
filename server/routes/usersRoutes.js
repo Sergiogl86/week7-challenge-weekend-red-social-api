@@ -9,6 +9,7 @@ const {
   loginUser,
   getMembers,
   getUserProfile,
+  updateProfileUser,
 } = require("../controller/usersController");
 const firebase = require("../middlewares/firebase");
 
@@ -46,6 +47,16 @@ router.post(
   validate(userValidation),
   addUser
 );
+
+router.put(
+  "/updateProfile",
+  upload.single("img"),
+  firebase,
+  validate(userValidation),
+  Auth,
+  updateProfileUser
+);
+
 router.get("/userProfile", Auth, getUserProfile);
 router.post("/login", validate(userLoginValidation), loginUser);
 
