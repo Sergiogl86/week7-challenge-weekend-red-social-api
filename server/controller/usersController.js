@@ -34,7 +34,10 @@ const getMembers = async (req, res, next) => {
 
 const getUserProfile = async (req, res, next) => {
   try {
-    const users = await User.findById(req.userid);
+    const users = await User.findById(
+      req.userid,
+      "username name id image imageLocal bio age"
+    );
     debug(chalk.blue("Haciendo un get a /redSocial/userProfile"));
     res.json(users);
   } catch (error) {
