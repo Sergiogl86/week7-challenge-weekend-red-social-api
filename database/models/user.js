@@ -35,12 +35,12 @@ const userSchema = new Schema({
   friends: {
     type: [Types.ObjectId],
     ref: "User",
-    required: true,
+    required: false,
   },
   enemies: {
     type: [Types.ObjectId],
     ref: "User",
-    required: true,
+    required: false,
   },
 });
 
