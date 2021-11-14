@@ -17,6 +17,21 @@ const getusers = async (req, res, next) => {
   }
 };
 
+const getMembers = async (req, res, next) => {
+  try {
+    const users = await User.find(
+      {},
+      "username name id image imageLocal bio age"
+    );
+    debug(chalk.blue("Haciendo un get a /redSocial/all"));
+    res.json(users);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
+};
+
 const addUser = async (req, res, next) => {
   const userBody = req.body;
   debug(chalk.blue("Haciendo un post a redSocial/register"));
@@ -90,4 +105,5 @@ module.exports = {
   getusers,
   addUser,
   loginUser,
+  getMembers,
 };
