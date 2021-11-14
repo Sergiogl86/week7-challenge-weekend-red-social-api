@@ -7,6 +7,7 @@ const {
   getusers,
   addUser,
   loginUser,
+  getMembers,
 } = require("../controller/usersController");
 const firebase = require("../middlewares/firebase");
 
@@ -36,6 +37,7 @@ const upload = multer({
 const router = express.Router();
 
 router.get("/all", Auth, getusers);
+router.get("/members", Auth, getMembers);
 router.post(
   "/register",
   upload.single("img"),
