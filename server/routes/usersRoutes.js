@@ -8,6 +8,7 @@ const {
   addUser,
   loginUser,
   getMembers,
+  getUserProfile,
 } = require("../controller/usersController");
 const firebase = require("../middlewares/firebase");
 
@@ -45,6 +46,7 @@ router.post(
   validate(userValidation),
   addUser
 );
+router.get("/userProfile", Auth, getUserProfile);
 router.post("/login", validate(userLoginValidation), loginUser);
 
 module.exports = router;
