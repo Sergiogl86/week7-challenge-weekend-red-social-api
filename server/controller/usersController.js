@@ -158,10 +158,102 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const addFriends = async (req, res, next) => {
+  debug(chalk.blue("Haciendo un post a /redSocial/friends"));
+  const { friendId } = req.body;
+  debug(chalk.blue(friendId));
+  const user = await User.findById(friendId);
+  if (!user) {
+    const error = new Error("Wrong credentials");
+    error.code = 401;
+    next(error);
+  } else {
+    debug(chalk.blue("Busco el usuario"));
+    debug(chalk.blue(user));
+    debug(chalk.blue("Me busco"));
+    const loggedUser = await User.findById(req.userid);
+    debug(chalk.blue(loggedUser));
+    loggedUser.friends = [...loggedUser.friends, user.id];
+    debug(chalk.blue("Añado el amigo!"));
+    debug(chalk.blue(loggedUser));
+    await loggedUser.save();
+    const loggedUserUpdate = await User.findById(
+      req.userid,
+      "username name id image imageLocal bio age friends enemies"
+    );
+    debug(chalk.blue("Resulatado final!"));
+    debug(chalk.blue(loggedUserUpdate));
+    res.json(loggedUserUpdate);
+  }
+};
+
+const addEnemies = async (req, res, next) => {
+  debug(chalk.blue("Haciendo un post a /redSocial/enemies"));
+  const { enemieId } = req.body;
+  debug(chalk.blue(enemieId));
+  const user = await User.findById(enemieId);
+  if (!user) {
+    const error = new Error("Wrong credentials");
+    error.code = 401;
+    next(error);
+  } else {
+    debug(chalk.blue("Busco el usuario"));
+    debug(chalk.blue(user));
+    debug(chalk.blue("Me busco"));
+    const loggedUser = await User.findById(req.userid);
+    debug(chalk.blue(loggedUser));
+    loggedUser.enemies = [...loggedUser.enemies, user.id];
+    debug(chalk.blue("Añado el enemigo!"));
+    debug(chalk.blue(loggedUser));
+    await loggedUser.save();
+    const loggedUserUpdate = await User.findById(
+      req.userid,
+      "username name id image imageLocal bio age friends enemies"
+    );
+    debug(chalk.blue("Resulatado final!"));
+    debug(chalk.blue(loggedUserUpdate));
+    res.json(loggedUserUpdate);
+  }
+};
+
+const getFriends = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userid).populate({
+      path: "friends",
+      select: "username name id image imageLocal bio age",
+    });
+    debug(chalk.blue("Haciendo un get a /redSocial/friends"));
+    res.json(user.friends);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
+};
+
+const getEnemies = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userid).populate({
+      path: "enemies",
+      select: "username name id image imageLocal bio age",
+    });
+    debug(chalk.blue("Haciendo un get a /redSocial/friends"));
+    res.json(user.enemies);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
+};
+
 module.exports = {
   getusers,
   addUser,
   loginUser,
+  getFriends,
+  getEnemies,
+  addFriends,
+  addEnemies,
   getMembers,
   getUserProfile,
   updateProfileUser,

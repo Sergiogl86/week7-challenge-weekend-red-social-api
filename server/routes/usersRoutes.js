@@ -10,6 +10,10 @@ const {
   getMembers,
   getUserProfile,
   updateProfileUser,
+  addFriends,
+  addEnemies,
+  getFriends,
+  getEnemies,
 } = require("../controller/usersController");
 const firebase = require("../middlewares/firebase");
 
@@ -59,5 +63,9 @@ router.put(
 
 router.get("/userProfile", Auth, getUserProfile);
 router.post("/login", validate(userLoginValidation), loginUser);
+router.get("/friends", Auth, getFriends);
+router.get("/enemies", Auth, getEnemies);
+router.put("/friends", Auth, addFriends);
+router.put("/enemies", Auth, addEnemies);
 
 module.exports = router;
