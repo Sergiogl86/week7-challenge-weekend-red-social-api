@@ -50,7 +50,7 @@ describe("Given a addUser function", () => {
 
       await addUser(req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith(user);
+      expect(res.json).toHaveBeenCalledWith({ user: "Creado correctamente!" });
     });
   });
   describe("When it receives new user with wrong user", () => {
