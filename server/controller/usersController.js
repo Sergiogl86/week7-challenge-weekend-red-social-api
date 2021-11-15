@@ -20,7 +20,7 @@ const getusers = async (req, res, next) => {
 const getMembers = async (req, res, next) => {
   try {
     const users = await User.find(
-      {},
+      { _id: { $ne: req.userid } },
       "username name id image imageLocal bio age"
     );
     debug(chalk.blue("Haciendo un get a /redSocial/all"));
