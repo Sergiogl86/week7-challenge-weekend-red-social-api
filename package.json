@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start dev": "nodemon index -q",
+    "start dev": "nodemon -q .",
     "start": "node index",
     "test": "jest --watchAll --collect-coverage"
   },
@@ -25,7 +25,8 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
-    "jest": "^27.3.1"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -40,7 +41,6 @@
     "mongoose": "^6.0.12",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",
-    "nodemon": "^2.0.15",
     "path": "^0.12.7"
   }
 }

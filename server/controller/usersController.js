@@ -63,7 +63,7 @@ const addUser = async (req, res, next) => {
     debug(chalk.blue("Creando usuario en el endpoint /redSocial/register"));
     const users = await User.create(userBody);
     debug(chalk.blue(`Hemos creado el usuario ${users}`));
-    res.json(users);
+    res.json({ user: "Creado correctamente!" });
   } catch (problem) {
     debug(chalk.blue("El detonante el catch es->"));
     debug(chalk.blue(problem));
@@ -140,6 +140,13 @@ const loginUser = async (req, res, next) => {
         {
           id: user.id,
           username: user.username,
+          name: user.name,
+          age: user.age,
+          bio: user.bio,
+          image: user.image,
+          imageLocal: user.imageLocal,
+          friends: user.friends,
+          enemies: user.enemies,
         },
         process.env.RED_HASH,
         {
