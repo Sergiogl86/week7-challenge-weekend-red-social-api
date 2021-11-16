@@ -173,6 +173,7 @@ const addFriends = async (req, res, next) => {
     debug(chalk.blue("Me busco"));
     const loggedUser = await User.findById(req.userid);
     debug(chalk.blue(loggedUser));
+    loggedUser.enemies = loggedUser.enemies.filter((id) => id !== user.id);
     loggedUser.friends = [...loggedUser.friends, user.id];
     debug(chalk.blue("Añado el amigo!"));
     debug(chalk.blue(loggedUser));
@@ -202,6 +203,7 @@ const addEnemies = async (req, res, next) => {
     debug(chalk.blue("Me busco"));
     const loggedUser = await User.findById(req.userid);
     debug(chalk.blue(loggedUser));
+    loggedUser.friends = loggedUser.friends.filter((id) => id !== user.id);
     loggedUser.enemies = [...loggedUser.enemies, user.id];
     debug(chalk.blue("Añado el enemigo!"));
     debug(chalk.blue(loggedUser));
